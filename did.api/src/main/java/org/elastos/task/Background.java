@@ -121,7 +121,7 @@ public class Background {
 //        }
 //    }
 
-    public Map<String, Object> handle(ReqCrud req,String sendAddress) {
+    public Map<String, Object> handle(ReqCrud req,String sendAddress) throws Exception{
         List<KeyCurd> keys = keyCurd.findByStatus(0);
         Map<String, Object> resultMap = new HashMap<>();
         String payload = req.getPayload();
@@ -136,33 +136,29 @@ public class Background {
             sendAddress = address;
         }
         String message = h1 + privateKey + h2 + sendAddress + h3 + payload + h4 + address + h5;
-        try {
-            String response = ElaKit.genRawTx(message);
+        String response = ElaKit.genRawTx(message);
 //            String response = ElaController.processMethod(message);
-            Map<String, Object> dataMap = (Map<String, Object>) JSON.parse(response);
-            Map<String, Object> result = (Map<String, Object>) dataMap.get("result");
-            String rawTx = (String) result.get("rawtx");
-            String endpoint = basicConfiguration.getENDPOINT();
-            Map<String, Object> map = new HashMap<>();
-            map.put("method", "sendrawtransaction");
-            Map<String, Object> tx = new HashMap<>();
-            tx.put("data", rawTx);
-            map.put("params", tx);
-            Map<String, String> header = new HashMap<>();
-            header.put("Content-Type", "application/json");
-            String resultData = HttpKit.post(endpoint, JSON.toJSONString(map), header);
-            logger.info(resultData);
-            resultMap = (Map<String, Object>) JSON.parse(resultData);
-            Object rst = resultMap.get("result");
-            if (rst != null){
-                req.setStatus(1);
-                req.setUpdateTime(new Date());
-                req.setTxid((String)rst);
-                reqCurd.save(req);
-                startPoint = startPoint+1;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        Map<String, Object> dataMap = (Map<String, Object>) JSON.parse(response);
+        Map<String, Object> result = (Map<String, Object>) dataMap.get("result");
+        String rawTx = (String) result.get("rawtx");
+        String endpoint = basicConfiguration.getENDPOINT();
+        Map<String, Object> map = new HashMap<>();
+        map.put("method", "sendrawtransaction");
+        Map<String, Object> tx = new HashMap<>();
+        tx.put("data", rawTx);
+        map.put("params", tx);
+        Map<String, String> header = new HashMap<>();
+        header.put("Content-Type", "application/json");
+        String resultData = HttpKit.post(endpoint, JSON.toJSONString(map), header);
+        logger.info(resultData);
+        resultMap = (Map<String, Object>) JSON.parse(resultData);
+        Object rst = resultMap.get("result");
+        if (rst != null){
+            req.setStatus(1);
+            req.setUpdateTime(new Date());
+            req.setTxid((String)rst);
+            reqCurd.save(req);
+            startPoint = startPoint+1;
         }
         return resultMap;
     }

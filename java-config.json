@@ -1,5 +1,5 @@
 {
-  "Host": "api.elastos.io:20606",
+  "Host": "api.elastos.io:21606",
   "Fee":"0.000001",
   "Confirmation":1,
   "RegisterAssetFee":"0.000001",

@@ -19,9 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("basic")
 public class BasicConfiguration {
-    private long ONE_ELA;
-    private double FEE;
-    private double CROSS_CHAIN_FEE;
     private boolean CROSS_DOMAIN;
     private String ENDPOINT;
 
@@ -41,28 +38,4 @@ public class BasicConfiguration {
         this.CROSS_DOMAIN = CROSS_DOMAIN;
     }
 
-    public double CROSS_CHAIN_FEE(){
-        return CROSS_CHAIN_FEE;
-    }
-
-    public void setCrossChain_FEE(double CROSS_CHAIN_FEE) {
-        this.CROSS_CHAIN_FEE = CROSS_CHAIN_FEE;
-    }
-
-    public long ONE_ELA() {
-        return ONE_ELA;
-
-    }
-
-    public void setONE_ELA(long ONE_ELA) {
-        this.ONE_ELA = ONE_ELA;
-    }
-
-    public double FEE() {
-        return FEE;
-    }
-
-    public void setFEE(double FEE) {
-        this.FEE = FEE;
-    }
 }

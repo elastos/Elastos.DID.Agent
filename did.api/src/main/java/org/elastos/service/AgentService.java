@@ -51,7 +51,7 @@ public class AgentService {
         return "pong";
     }
 
-    public String takePayload(PayloadEntity reqEntity) {
+    public String takePayload(PayloadEntity reqEntity) throws Exception{
         ReqCrud req = new ReqCrud();
         req.setLocalSystemTime(new Date());
         req.setPayload(reqEntity.getPayload());

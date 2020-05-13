@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.elastos.entity.Operation;
 import org.elastos.entity.PayloadEntity;
+import org.elastos.entity.ReturnMsgEntity;
 import org.elastos.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class AgentController extends BaseController {
         return call(null,null,"ping",service);
     }
 
-    @RequestMapping(value = "/data/dst",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/did/agent/payload",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     @ResponseBody
     public String takeDidInfo(@RequestAttribute String reqBody){
         JSONObject obj = JSON.parseObject(reqBody);
@@ -49,22 +50,26 @@ public class AgentController extends BaseController {
         return call(JSON.toJSONString(payload), PayloadEntity.class,"takePayload",service);
     }
 
-    @RequestMapping(value = "/data/dst/pretty",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/did/agent/payload/pretty",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     @ResponseBody
     public String takeDidInfo_pretty(@RequestAttribute String reqBody){
-        JSONObject obj = JSON.parseObject(reqBody);
-        Operation data = obj.getObject("data", Operation.class);
-        String address = obj.getString("address");
         Map<String,Object> payload = new HashMap<>();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(baos);
         try{
+            JSONObject obj = JSON.parseObject(reqBody);
+            Operation data = obj.getObject("data", Operation.class);
+            String address = obj.getString("address");
+            if (data == null){
+                JSON.toJSONString(new ReturnMsgEntity<>().setResult("data can not be blank").setStatus(400l));
+            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            DataOutputStream dos = new DataOutputStream(baos);
+
             data.Serialize(dos);
             payload.put("payload", DatatypeConverter.printHexBinary(baos.toByteArray()));
+            payload.put("address",address);
         }catch(Exception ex){
-            ex.printStackTrace();
+            JSON.toJSONString(new ReturnMsgEntity<>().setResult("Invalid request param").setStatus(400l));
         }
-        payload.put("address",address);
         return call(JSON.toJSONString(payload), PayloadEntity.class,"takePayload",service);
     }
 

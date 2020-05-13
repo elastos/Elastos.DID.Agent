@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
  * 9/3/18
  */
 @RestController
-@RequestMapping("/api/1/blockagent/upchain")
+@RequestMapping("/api/v1")
 public class BaseController {
     @Autowired
     private RetCodeConfiguration retCodeConfiguration;

@@ -1,0 +1,11 @@
+**/*.iml
+**/target
+**/.idea
+*.iml
+.idea
+**/logs/*
+**/_build
+**/_static
+did.api/src/main/resources/application.properties
+did.api/src/test/java/org/elastos/*.java
+

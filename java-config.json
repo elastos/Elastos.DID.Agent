@@ -1,0 +1,10 @@
+{
+  "Host": "api.elastos.io:20606",
+  "Fee":"0.000001",
+  "Confirmation":1,
+  "RegisterAssetFee":"0.000001",
+  "RpcConfiguration":{
+    "User": "ElaUser",
+    "Pass": "Ela123"
+  }
+}

@@ -21,6 +21,15 @@ import org.springframework.stereotype.Component;
 public class BasicConfiguration {
     private boolean CROSS_DOMAIN;
     private String ENDPOINT;
+    private String APIKEY;
+
+    public String getAPIKEY() {
+        return APIKEY;
+    }
+
+    public void setAPIKEY(String APIKEY) {
+        this.APIKEY = APIKEY;
+    }
 
     public String getENDPOINT() {
         return ENDPOINT;

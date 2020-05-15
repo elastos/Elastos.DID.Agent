@@ -62,6 +62,11 @@ public class AgentService {
         if (rst != null){
             return JSON.toJSONString(new ReturnMsgEntity<String>(retCodeConfiguration.SUCC(),(String)rst));
         }
+        Object error = data.get("error");
+        if (error != null) {
+            String message = (String)((Map<String,Object>)error).get("message");
+            return JSON.toJSONString(new ReturnMsgEntity<String>(retCodeConfiguration.PROCESS_ERROR(),message));
+        }
         return JSON.toJSONString(new ReturnMsgEntity<String>(retCodeConfiguration.PROCESS_ERROR(),"Wallet not ready , try again later"));
     }
 

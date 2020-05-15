@@ -59,7 +59,7 @@ public class Operation {
         public void Serialize(DataOutputStream o) throws Exception{
             Util.WriteVarBytes(o,this.Specification.getBytes());
             Util.WriteVarBytes(o,this.Operation.getBytes());
-            if(this.Operation == "update"){
+            if(this.Operation.equals("update")){
                 Util.WriteVarBytes(o,this.PreviousTxid.getBytes());
             }
         }
